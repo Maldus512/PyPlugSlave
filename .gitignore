@@ -1,3 +1,4 @@
+.vscode/browse.*
 *.o
 *.d
 .sconsign.dblite

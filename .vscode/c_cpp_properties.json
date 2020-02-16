@@ -1,0 +1,32 @@
+{
+  "env": {
+    "libopencm3": "${workspaceFolder}/components/libopencm3"
+  },
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/src",
+        "${libopencm3}/include",
+        "${workspaceFolder}/components/generic_embedded_libs"
+      ],
+      "defines": ["STM32L0"],
+      "compilerPath": "arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "clang-x64",
+      "browse": {
+        "path": [
+          "${workspaceFolder}",
+          "${workspaceFolder}/src",
+          "${libopencm3}/include",
+          "${workspaceFolder}/components/generic_embedded_libs"
+        ],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": "${workspaceRoot}/.vscode/browse.vc.db"
+      }
+    }
+  ],
+  "version": 4
+}

@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "SConstruct": "python",
+        "usart.h": "c",
+        "common.h": "c",
+        "memorymap.h": "c",
+        "usart_common_v2.h": "c",
+        "usart_common_all.h": "c",
+        "gpio.h": "c",
+        "rcc.h": "c",
+        "gpio_common_f24.h": "c",
+        "gpio_common_f234.h": "c",
+        "timer.h": "c"
+    }
+}

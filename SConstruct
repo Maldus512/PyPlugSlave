@@ -11,7 +11,7 @@ CFLAGS = ["-Wall", "-Wextra", "-g3", "-O0", "-MD",
 LDSCRIPT = "{}/lib/stm32/l0/stm32l0xx8.ld".format(LIBOPENCM3)
 LDFLAGS = ["-nostartfiles", "-L{}/lib".format(
     LIBOPENCM3), "-Wl,-T,{}".format(LDSCRIPT)] + CPUFLAGS
-LDLIBS = ["-lopencm3_stm32l0"]  # , "-lc", "-lnosys"]
+LDLIBS = ["-lopencm3_stm32l0", "-lc", "-lnosys"]
 
 # Creates a Phony target
 
@@ -36,20 +36,21 @@ if 'PATH' in os.environ.keys():
 env_options = {
     "ENV": externalEnvironment,
     "CC": "{}gcc".format(TOOLCHAIN),
-    "CPPPATH": ["{}/include".format(LIBOPENCM3)],
+    "CPPPATH": ["{}/include".format(LIBOPENCM3), "./components/generic_embedded_libs"],
     "CCFLAGS": CFLAGS,
     "LINKFLAGS": LDFLAGS,
     "LIBS": LDLIBS
 }
 
 
-sources = Glob("*.c")
+sources = Glob("src/*.c")
+sources += Glob("src/**/*.c")
 
 env = Environment(**env_options)
 
 lib = env.Command(LIBOPENCM3_ARCHIVE, None, "cd {} && make".format(LIBOPENCM3))
 env.NoClean(lib)
-p = env.Program(ELF, [sources,lib])
+p = env.Program(ELF, [sources, lib])
 env.Command(BIN, p, "{}objcopy -O binary {} {}".format(TOOLCHAIN, ELF, BIN))
 env.Default(BIN)
 
