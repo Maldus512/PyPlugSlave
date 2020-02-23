@@ -6,10 +6,11 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/usart.h>
 #include "peripherals/timekeeper.h"
+#include "peripherals/acs723.h"
 
-#define LOAD_PIN        GPIO1
-#define LOAD_PORT       GPIOB
-#define OUT_SIGNAL      GPIO15
+#define LOAD_PIN GPIO1
+#define LOAD_PORT GPIOB
+#define OUT_SIGNAL GPIO15
 #define OUT_SIGNAL_PORT GPIOA
 
 static void gpio_setup(void) {
@@ -63,11 +64,12 @@ void send_string(char *str) {
 
 int main(void) {
     char msg[128];
-    int  i, c = 0;
+    int  c = 0;
 
     clock_init();
     gpio_setup();
     usart_setup();
+    adc_setup();
 
     timekeeper_init();
 
@@ -80,7 +82,7 @@ int main(void) {
 
         c = (c + 1) % 10;
 
-        sprintf(msg, "log [%lu]: %i\n", get_millis(), c);
+        sprintf(msg, "log [%lu]: %i - %d\n", get_millis(), c, read_acs723());
         send_string(msg);
     }
 

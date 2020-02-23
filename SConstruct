@@ -31,6 +31,8 @@ def PhonyTargets(
 externalEnvironment = {}
 if 'PATH' in os.environ.keys():
     externalEnvironment['PATH'] = os.environ['PATH']
+if 'LD_LIBRARY_PATH' in os.environ.keys():
+    externalEnvironment['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH']
 
 
 env_options = {

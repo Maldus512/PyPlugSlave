@@ -38,7 +38,6 @@ unsigned long get_millis() {
 
 void delay_ms(unsigned long ms) {
     unsigned long start = get_millis();
-    unsigned long now   = start;
     while (!is_expired(start, get_millis(), ms - 1))
         ;
 }
