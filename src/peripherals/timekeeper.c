@@ -39,5 +39,5 @@ unsigned long get_millis() {
 void delay_ms(unsigned long ms) {
     unsigned long start = get_millis();
     while (!is_expired(start, get_millis(), ms - 1))
-        ;
+        __asm__("wfi");
 }

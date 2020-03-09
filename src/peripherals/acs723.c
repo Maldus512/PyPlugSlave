@@ -22,7 +22,10 @@ void adc_setup(void) {
     adc_set_single_conversion_mode(ADC1);
     // adc_disable_external_trigger_regular(ADC1);
     adc_set_right_aligned(ADC1);
-    // adc_set_sample_time_on_all_channels(ADC1, ADC_SMPTIME_071DOT5);
+
+    ADC_SMPR1(ADC1) |= 6;
+
+    //adc_set_sample_time_on_all_channels(ADC1, 6);
     //adc_set_regular_sequence(ADC1, 1, channel_array);
     adc_set_resolution(ADC1, 0b00); // 12 bit
     //adc_disable_analog_watchdog(ADC1);
@@ -37,5 +40,7 @@ void adc_setup(void) {
 
 uint16_t read_acs723() {
     adc_start_conversion_regular(ADC1);
+    while((ADC_ISR(ADC1) & ADC_ISR_EOC) == 0)
+        __asm__("nop");
     return (uint16_t) adc_read_regular(ADC1);
 }

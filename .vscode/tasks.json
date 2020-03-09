@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build binary",
+            "command": "scons",
+        },
+        {
+            "label": "kill openocd",
+            "command": "sh",
+            "args" : ["killopenocd.sh"],
+        },
+        {
+            "label": "openocd",
+            "type": "shell",
+            "command": "openocd",
+            "dependsOn": ["build binary"],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "openocd",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^Error:(.*)$",
+                    "file": 1,
+                    "line": 1,
+                    "column": 1,
+                    "severity": 1,
+                    "message": 0
+                },
+                "background": {
+                    "beginsPattern": "^Open On-Chip Debugger.*$",
+                    "endsPattern": "^Info :.*: hardware has .*$"
+                    //"endsPattern": "^debug_level :.*$"
+                }
+            }
+        }
+    ]
+}
