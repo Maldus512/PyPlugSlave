@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <string.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/flash.h>
 #include <libopencm3/stm32/pwr.h>
@@ -53,7 +54,10 @@ static void systick_setup(void) {
 }
 
 int main(void) {
-    char msg[128];
+    char          msg[128];
+    int           len;
+    unsigned long timestamp = 0;
+    uint16_t      cal       = 2048;
 
     clock_init();
     gpio_setup();
@@ -63,31 +67,36 @@ int main(void) {
 
     timekeeper_init();
 
-    int flag = 0;
+    gpio_clear(LOAD_PORT, LOAD_PIN);
 
     while (1) {
-        if (gpio_get(SIGNAL_PORT, IN_SIGNAL)) {
-            gpio_clear(LOAD_PORT, LOAD_PIN);
-        } else {
-            gpio_set(LOAD_PORT, LOAD_PIN);
+        if ((len = uart_readline((uint8_t *)msg)) > 0) {
+            int res = 0;
+            if (strcmp(msg, "ON\n") == 0) {
+                gpio_set(LOAD_PORT, LOAD_PIN);
+                res = 1;
+            } else if (strcmp(msg, "OFF\n") == 0) {
+                gpio_clear(LOAD_PORT, LOAD_PIN);
+                res = 1;
+            } else if (strcmp(msg, "READ\n") == 0) {
+                double tmp = acs723_read_current(&cal);
+                snprintf(msg, 128, "%4f (%i)\n", tmp, cal);
+                send_string(msg);
+                res = 1;
+            }
+
+            if (res == 1)
+                send_string("OK\n");
+            else if (res < 0)
+                send_string("ERR\n");
         }
 
-        if (flag) {
+        if (get_millis() > timestamp + 1000UL) {
             gpio_toggle(SIGNAL_PORT, OUT_SIGNAL);
 
-            sprintf(msg, "log [%lu]: %d\n", get_millis(), read_acs723());
-            send_string(msg);
-            flag = 0;
-        }
-
-        uint32_t reg = USART_ISR(USART2);
-        if (reg & USART_ISR_FE)
-            USART_ICR(USART2) |= USART_ICR_FECF;
-
-        reg = USART_ISR(USART2);
-        if (USART_ISR(USART2) & USART_ISR_RXNE) {
-            char test = usart_recv(USART2);
-            flag      = test == '\n';
+            // sprintf(msg, "log [%lu]: %d\n", get_millis(), read_acs723());
+            // send_string(msg);
+            timestamp = get_millis();
         }
 
         __asm__("wfi");

@@ -5,5 +5,6 @@ void          timekeeper_init();
 void          timekeeper_update();
 unsigned long get_millis();
 void          delay_ms(unsigned long ms);
+void          delay_us(unsigned int us);
 
 #endif

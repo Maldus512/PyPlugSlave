@@ -3,6 +3,7 @@
 
 
 void usart_setup(void);
-void        send_string(char *str);
+void send_string(char *str);
+int  uart_readline(uint8_t *buffer);
 
 #endif

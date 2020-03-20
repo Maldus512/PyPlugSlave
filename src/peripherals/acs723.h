@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 void     adc_setup(void);
-uint16_t read_acs723();
+uint16_t acs723_read();
+
+double   acs723_read_current(uint16_t *calibration);
 
 #endif
