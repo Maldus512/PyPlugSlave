@@ -13,6 +13,10 @@
         "timer.h": "c",
         "flash.h": "c",
         "acs723.h": "c",
-        "timekeeper.h": "c"
+        "timekeeper.h": "c",
+        "systick.h": "c",
+        "stdint.h": "c",
+        "math.h": "c",
+        "float.h": "c"
     }
 }

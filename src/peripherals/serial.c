@@ -11,11 +11,12 @@ static unsigned char   buffer[BUFSIZE];
 static circular_buf_t  _cbuf;
 static circular_buf_t *cbuf = &_cbuf;
 
-void usart_setup(void) {
+void serial_init(void) {
     circular_buf_init(cbuf, buffer, BUFSIZE);
 
     nvic_enable_irq(NVIC_USART2_IRQ);
 
+    rcc_periph_clock_enable(RCC_GPIOA);
     /* Setup GPIO pin GPIO_USART2_TX. */
     gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
     gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO3);
@@ -39,7 +40,7 @@ void usart_setup(void) {
     usart_enable(USART2);
 }
 
-void send_string(char *str) {
+void serial_print(char *str) {
     while (*str != 0) {
         usart_send_blocking(USART2, *(str++));
     }
@@ -61,7 +62,7 @@ void usart2_isr(void) {
     __asm__("nop");
 }
 
-int uart_readline(uint8_t *buffer) {
+int serial_readline(uint8_t *buffer) {
     uint8_t intermediate[BUFSIZE];
 
     int len = circular_buf_peek(cbuf, intermediate, BUFSIZE);

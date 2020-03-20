@@ -5,9 +5,9 @@
 #include <math.h>
 #include "timekeeper.h"
 
-//uint8_t channel_array[] = {1, 1, ADC_CHANNEL_TEMP};
+// uint8_t channel_array[] = {1, 1, ADC_CHANNEL_TEMP};
 
-void adc_setup(void) {
+void acs723_init(void) {
     rcc_periph_clock_enable(RCC_ADC1);
     rcc_periph_clock_enable(RCC_GPIOA);
 
@@ -40,7 +40,7 @@ void adc_setup(void) {
     }
 }
 
-uint16_t acs723_read() {
+static uint16_t acs723_read() {
     adc_start_conversion_regular(ADC1);
     while ((ADC_ISR(ADC1) & ADC_ISR_EOC) == 0)
         __asm__("nop");

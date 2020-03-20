@@ -1,12 +1,14 @@
 import os
 
+SRC_DIR = 'src'
+BUILD_DIR = 'build'
 TOOLCHAIN = "arm-none-eabi-"
 ELF = "pyplugslave.elf"
 BIN = "pyplugslave.bin"
 LIBOPENCM3 = "components/libopencm3"
 LIBOPENCM3_ARCHIVE = "{}/lib/libopencm3_stm32l0.a".format(LIBOPENCM3)
 CPUFLAGS = ["-mcpu=cortex-m0", "-mthumb"]
-CFLAGS = ["-Wall", "-Wextra", "-g3", "-O0",# "-MD",
+CFLAGS = ["-Wall", "-Wextra", "-g3", "-O0",  # "-MD",
           "-DSTM32L0", "-I{}include".format(LIBOPENCM3)] + CPUFLAGS
 LDSCRIPT = "{}/lib/stm32/l0/stm32l0xx8.ld".format(LIBOPENCM3)
 LDFLAGS = ["-nostartfiles", "-L{}/lib".format(
@@ -38,15 +40,16 @@ if 'LD_LIBRARY_PATH' in os.environ.keys():
 env_options = {
     "ENV": externalEnvironment,
     "CC": "{}gcc".format(TOOLCHAIN),
-    "CPPPATH": ["{}/include".format(LIBOPENCM3), "./components/generic_embedded_libs"],
+    "CPPPATH": [SRC_DIR, "{}/include".format(LIBOPENCM3), "./components/generic_embedded_libs"],
     "CCFLAGS": CFLAGS,
     "LINKFLAGS": LDFLAGS,
     "LIBS": LDLIBS
 }
 
+#VariantDir(BUILD_DIR, SRC_DIR)
 
-sources = Glob("src/*.c")
-sources += Glob("src/**/*.c")
+sources = Glob("{}/*.c".format(SRC_DIR))
+sources += Glob("{}/**/*.c".format(SRC_DIR))
 sources += Glob("components/generic_embedded_libs/generic/circularbuffer/*.c")
 
 env = Environment(**env_options)
