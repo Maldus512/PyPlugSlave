@@ -3,6 +3,7 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/cm3/nvic.h>
 #include <string.h>
+#include <errno.h>
 #include "generic/circularbuffer/circular_buffer.h"
 
 #define BUFSIZE 256
@@ -76,4 +77,20 @@ int serial_readline(uint8_t *buffer) {
         }
     }
     return 0;
+}
+
+int _write(int file, char *ptr, int len) {
+    int i;
+
+    if (file == 1) {
+        for (i = 0; i < len; i++) {
+            if (ptr[i] == '\n') {
+                usart_send_blocking(USART2, '\r');
+            }
+            usart_send_blocking(USART2, ptr[i]);
+        }
+        return i;
+    }
+    errno = EIO;
+    return -1;
 }

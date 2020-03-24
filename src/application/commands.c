@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <libopencm3/stm32/gpio.h>
 
+#include "MCP9800/MCP9800.h"
+#include "peripherals/i2c_peripherals.h"
 #include "peripherals/load.h"
 #include "peripherals/serial.h"
 #include "model/model.h"
 
 static void strip_newline(char *str);
+static int  cmd_temp(model_t *model);
 static int  cmd_on(model_t *model);
 static int  cmd_off(model_t *model);
 static int  cmd_read(model_t *model);
@@ -18,6 +21,7 @@ static struct {
     {"ON", cmd_on},
     {"OFF", cmd_off},
     {"READ", cmd_read},
+    {"TEMP", cmd_temp},
 };
 
 int process_command(char *cmd, model_t *model) {
@@ -50,8 +54,13 @@ static int cmd_off(model_t *model) {
 }
 
 static int cmd_read(model_t *model) {
-    char res[128];
-    snprintf(res, 128, "%4f (%i)\n", model->current, model->calibration);
-    serial_print(res);
+    printf("%4f (%i)\n", model->current, model->calibration);
+    return 0;
+}
+
+static int cmd_temp(model_t *model) {
+    (void)model;
+    i2c_driver_t tempdr = {0x90, i2c_custom_transfer, NULL};
+    printf("%4f\n", MCP9800_read_temperature(tempdr));
     return 0;
 }

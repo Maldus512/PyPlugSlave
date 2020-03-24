@@ -40,7 +40,7 @@ if 'LD_LIBRARY_PATH' in os.environ.keys():
 env_options = {
     "ENV": externalEnvironment,
     "CC": "{}gcc".format(TOOLCHAIN),
-    "CPPPATH": [SRC_DIR, "{}/include".format(LIBOPENCM3), "./components/generic_embedded_libs"],
+    "CPPPATH": [SRC_DIR, "{}/include".format(LIBOPENCM3), "./components/generic_embedded_libs", "./components/I2C"],
     "CCFLAGS": CFLAGS,
     "LINKFLAGS": LDFLAGS,
     "LIBS": LDLIBS
@@ -51,6 +51,9 @@ env_options = {
 sources = Glob("{}/*.c".format(SRC_DIR))
 sources += Glob("{}/**/*.c".format(SRC_DIR))
 sources += Glob("components/generic_embedded_libs/generic/circularbuffer/*.c")
+sources += Glob("components/I2C/common/*.c")
+sources += Glob("components/I2C/MCP9800/*.c")
+sources += Glob("components/I2C/EEPROM/*.c")
 
 env = Environment(**env_options)
 

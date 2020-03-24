@@ -17,6 +17,11 @@
         "systick.h": "c",
         "stdint.h": "c",
         "math.h": "c",
-        "float.h": "c"
+        "float.h": "c",
+        "nvic.h": "c",
+        "exti.h": "c",
+        "syscfg.h": "c",
+        "i2c.h": "c",
+        "eeprom_common.h": "c"
     }
 }
