@@ -9,6 +9,7 @@
 
 #define WAIT4ACK 2
 
+//TODO: libopencm3 code is very confused, I need to refactor this (also using the RELOAD register)
 int i2c_write_session(uint8_t devaddr, uint8_t *write, int wrlen) {
     i2c_set_7bit_address(I2C1, devaddr >> 1);
     i2c_set_write_transfer_dir(I2C1);

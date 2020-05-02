@@ -22,6 +22,9 @@
         "exti.h": "c",
         "syscfg.h": "c",
         "i2c.h": "c",
-        "eeprom_common.h": "c"
+        "eeprom_common.h": "c",
+        "flash_common_l01.h": "c",
+        "flash_common_all.h": "c",
+        "pwr.h": "c"
     }
 }

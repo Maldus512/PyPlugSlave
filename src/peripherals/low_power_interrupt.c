@@ -40,6 +40,10 @@ void low_power_interrupt_init(void) {
     exti_reset_request(EXTI0);
 }
 
+int is_power_on(void) {
+    return gpio_get(GPIOA, GPIO8);
+}
+
 void exti0_1_isr(void) {
     exti_reset_request(EXTI0);
 }

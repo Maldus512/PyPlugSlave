@@ -28,6 +28,7 @@
 int main(void) {
     char          msg[128];
     unsigned long sumts = 0, timestamp = 0, readts = 0, cycletime;
+    i2c_driver_t tempdr = {0x90, i2c_custom_transfer, NULL};
 
     model_t model     = {0};
     model.calibration = DEFAULT_CALIBRATION;
@@ -44,6 +45,7 @@ int main(void) {
     timekeeper_init();
 
     load_off();
+    MCP9800_set_resolution(tempdr, MCP9800_12BIT);
 
     while (1) {
         cycletime = get_millis();

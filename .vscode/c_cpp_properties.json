@@ -9,7 +9,8 @@
         "${workspaceFolder}",
         "${workspaceFolder}/src",
         "${libopencm3}/include",
-        "${workspaceFolder}/components/generic_embedded_libs"
+        "${workspaceFolder}/components/generic_embedded_libs",
+        "${workspaceFolder}/components/I2C"
       ],
       "defines": ["STM32L0"],
       "compilerPath": "arm-none-eabi-gcc",
@@ -21,7 +22,8 @@
           "${workspaceFolder}",
           "${workspaceFolder}/src",
           "${libopencm3}/include",
-          "${workspaceFolder}/components/generic_embedded_libs"
+          "${workspaceFolder}/components/generic_embedded_libs",
+          "${workspaceFolder}/components/I2C"
         ],
         "limitSymbolsToIncludedHeaders": true,
         "databaseFilename": "${workspaceRoot}/.vscode/browse.vc.db"
