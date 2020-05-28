@@ -25,6 +25,7 @@
         "eeprom_common.h": "c",
         "flash_common_l01.h": "c",
         "flash_common_all.h": "c",
-        "pwr.h": "c"
+        "pwr.h": "c",
+        "serial.h": "c"
     }
 }

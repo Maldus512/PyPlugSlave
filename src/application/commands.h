@@ -3,6 +3,6 @@
 
 #include "model/model.h"
 
-int process_command(char *cmd, model_t *model);
+int process_command(char *cmd, model_t *model, char *resp);
 
 #endif
